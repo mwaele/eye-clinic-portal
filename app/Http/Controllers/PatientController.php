@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Patient;
 
 class PatientController extends Controller
 {
@@ -11,7 +13,12 @@ class PatientController extends Controller
      */
     public function index()
     {
-        //
+         // Fetch patients created within the last 30 days
+        $patients = Patient::where('created_at', '>=', Carbon::now()->subDays(30))
+            ->orderBy('patient_no', 'desc')
+            ->paginate(10);
+
+        return view('patients.index', compact('patients'));
     }
 
     /**
@@ -27,7 +34,23 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'first_name' => 'required|string|max:100',
+            'last_name'  => 'required|string|max:100',
+            'phone'      => 'required|string|max:20',
+            'age'        => 'required|integer',
+            'address'    => 'required|string|max:255',
+        ]);
+
+        Patient::create([
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'phone'      => $request->phone,
+            'age'        => $request->age,
+            'residence'  => $request->address,
+        ]);
+
+        return redirect()->route('patients.index')->with('success', 'Patient registered successfully!');
     }
 
     /**

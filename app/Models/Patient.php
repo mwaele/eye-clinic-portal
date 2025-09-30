@@ -16,6 +16,12 @@ class Patient extends Model
         'age',
     ];
 
+    protected $casts = [
+        'visit_date' => 'datetime',
+        'dob' => 'date',
+    ];
+
+
     public function eyeExaminations()
     {
         return $this->hasMany(EyeExamination::class);

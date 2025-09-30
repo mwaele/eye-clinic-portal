@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Patient;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 use Carbon\Carbon;
 
 class PatientsTableSeeder extends Seeder
@@ -31,7 +32,11 @@ class PatientsTableSeeder extends Seeder
                 'age' => $row[6] ?? null,
                 'sex' => $row[7] ?? null,
                 'blood_group' => $row[8] ?? null,
-                'visit_date' => !empty($row[9]) ? Carbon::parse($row[9]) : null,
+                'visit_date' => !empty($row[9]) ? (
+                    is_numeric($row[9])
+                        ? Carbon::instance(ExcelDate::excelToDateTimeObject($row[9]))
+                        : Carbon::createFromFormat('d/m/Y', $row[9])
+                ) : null,
                 'visit_no' => $row[10] ?? null,
                 'consult_fee' => $row[11] ?? null,
                 'employee_id' => $row[12] ?? null,
