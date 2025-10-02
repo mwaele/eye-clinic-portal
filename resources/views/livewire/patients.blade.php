@@ -21,7 +21,7 @@
     @endif
 
     <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
-        <thead class="bg-gray-100 dark:bg-gray-700">
+        <thead class="text-md bg-gray-100 dark:bg-gray-700">
             <tr>
                 <th class="px-4 py-2 text-left">#</th>
                 <th class="px-4 py-2 text-left">Patient No.</th>
@@ -35,7 +35,7 @@
         </thead>
         <tbody>
             @forelse($patients as $patient)
-                <tr class="border-b dark:border-gray-700">
+                <tr class="text-sm border-b dark:border-gray-700">
                     <td class="px-4 py-2"> {{ $loop->iteration }}.</td>
                     <td class="px-4 py-2">{{ $patient->patient_no }}</td>
                     <td class="px-4 py-2">{{ $patient->name }}</td>

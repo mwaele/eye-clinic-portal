@@ -28,6 +28,36 @@
                         {{ __('Eye Examinations') }}
                     </x-nav-link>
                 </div>
+
+                <!-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('examinations') }}" :active="request()->routeIs('examinations')">
+                        {{ __('Dispense') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('examinations') }}" :active="request()->routeIs('examinations')">
+                        {{ __('Inventory') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('examinations') }}" :active="request()->routeIs('examinations')">
+                        {{ __('Payments') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('examinations') }}" :active="request()->routeIs('examinations')">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('examinations') }}" :active="request()->routeIs('examinations')">
+                        {{ __('Reports') }}
+                    </x-nav-link>
+                </div> -->
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
