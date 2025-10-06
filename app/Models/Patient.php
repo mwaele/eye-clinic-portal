@@ -31,5 +31,15 @@ class Patient extends Model
     {
         return $this->hasMany(DiagnosisMaster::class);
     }
+    
+    public function getFormattedPhoneAttribute()
+    {
+        return $this->phone ? '0' . $this->phone : null;
+    }
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
 
 }

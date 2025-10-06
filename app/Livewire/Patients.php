@@ -28,24 +28,30 @@ class Patients extends Component
 
     public function updatingSearch()
     {
-        // Reset pagination when search changes
         $this->resetPage();
     }
 
     public function render()
     {
-        $patients = Patient::where(function ($query) {
-                $query->where('name', 'like', "%{$this->search}%")
-                    ->orWhere('patient_no', 'like', "%{$this->search}%")
-                    ->orWhere('phone', 'like', "%{$this->search}%");
-            })
-            ->where('visit_date', '>=', Carbon::now()->subDays(30))
-            ->orderByDesc('legacy_patient_id')
+        $query = Patient::query()
+            ->where('visit_date', '>=', now()->subDays(30)); // ✅ filter first
+
+        if ($this->search) {
+            $search = trim($this->search);
+
+            $query->where(function ($sub) use ($search) {
+                $sub->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhere('patient_no', 'LIKE', "%{$search}%")
+                    ->orWhereRaw('CONCAT("0", phone) LIKE ?', ["%{$search}%"])
+                    ->orWhere('phone', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $patients = $query
+            ->orderByDesc('patient_no')
             ->paginate(10);
 
-        return view('livewire.patients', [
-            'patients' => $patients,
-        ]);
+        return view('livewire.patients', ['patients' => $patients]);
     }
 
     public function openModal()
@@ -88,84 +94,20 @@ class Patients extends Component
 
     public function checkIn($id)
     {
-        // Logic for checking in a patient for a new visit
+        $patient = Patient::findOrFail($id);
+
+        // Check if there's already an active visit
+        $activeVisit = $patient->visits()->where('status', 'active')->first();
+
+        if (!$activeVisit) {
+            $patient->visits()->create([
+                'status' => 'active',
+                'checked_in_at' => now(),
+            ]);
+            session()->flash('message', "{$patient->name} has been checked in.");
+        } else {
+            session()->flash('message', "{$patient->name} already has an active visit.");
+        }
     }
+
 }
-
-// <?php
-
-// namespace App\Livewire;
-
-// use Livewire\Component;
-// use Livewire\WithPagination;
-// use App\Models\Patient;
-// use Carbon\Carbon;
-
-// class Patients extends Component
-// {
-//     public $showModal = false;
-
-//     public $first_name;
-//     public $last_name;
-//     public $phone;
-//     public $age;
-//     public $address;
-
-//     protected $rules = [
-//         'first_name' => 'required|string|max:100',
-//         'last_name'  => 'required|string|max:100',
-//         'phone'      => 'required|string|max:20',
-//         'age'        => 'required|integer|min:0|max:120',
-//         'address'    => 'nullable|string|max:255',
-//     ];
-
-//     public function render()
-//     {
-//         $patients = Patient::where('created_at', '>=', Carbon::now()->subDays(30))
-//             ->orderBy('legacy_patient_id', 'desc')
-//             ->paginate(10);
-
-//         return view('livewire.patients', [
-//             'patients' => $patients,
-//         ]);
-//     }
-
-//     public function openModal()
-//     {
-//         $this->resetForm();
-//         $this->showModal = true;
-//     }
-
-//     public function registerPatient()
-//     {
-//         $this->validate();
-
-//         // Auto increment patient_no from last Excel record
-//         $lastPatientNo = Patient::max('patient_no') ?? 0;
-
-//         Patient::create([
-//             'patient_no' => $lastPatientNo + 1,
-//             'legacy_patient_id' => null,
-//             'name' => strtoupper($this->first_name . ' ' . $this->last_name),
-//             'phone' => $this->phone,
-//             'age' => $this->age,
-//             'address' => $this->address,
-//         ]);
-
-//         $this->showModal = false;
-//         session()->flash('message', 'Patient registered successfully.');
-//     }
-
-//     public function resetForm()
-//     {
-//         $this->first_name = '';
-//         $this->last_name = '';
-//         $this->phone = '';
-//         $this->age = '';
-//         $this->address = '';
-//     }
-// }
-
-
-
-

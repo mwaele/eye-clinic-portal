@@ -3,7 +3,7 @@
         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Patients (Last 30 Days)</h2>
         <div class="flex space-x-2">
             <input type="text"
-                wire:model.debounce.300ms="search"
+                wire:model.live.debounce.300ms="search"
                 placeholder="Search patients..."
                 class="px-3 py-2 m-2 rounded-md border-gray-300 dark:bg-gray-700 dark:border-gray-600 focus:ring focus:ring-indigo-500">
             <button wire:click="openModal"
@@ -39,7 +39,7 @@
                     <td class="px-4 py-2"> {{ $loop->iteration }}.</td>
                     <td class="px-4 py-2">{{ $patient->patient_no }}</td>
                     <td class="px-4 py-2">{{ $patient->name }}</td>
-                    <td class="px-4 py-2">0{{ $patient->phone }}</td>
+                    <td class="px-4 py-2">{{ $patient->formatted_phone }}</td>
                     <td class="px-4 py-2">{{ $patient->age }}</td>
                     <td class="px-4 py-2">{{ $patient->address }}</td>
                     <td class="px-4 py-2">
@@ -99,7 +99,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 dark:text-gray-300">Address</label>
+                    <label class="block text-gray-700 dark:text-gray-300">Residence</label>
                     <input type="text" wire:model.defer="address" class="w-full mt-1 rounded-md border-gray-300 dark:bg-gray-700 dark:border-gray-600" />
                 </div>
             </div>
