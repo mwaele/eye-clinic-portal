@@ -4,17 +4,17 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\EyeExamination;
+use App\Models\LegacyEyeExamination;
 use App\Models\Patient;
 use App\Models\DiagnosisMaster;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 
-class EyeExaminationsSeeder extends Seeder
+class LegacyEyeExaminationsSeeder extends Seeder
 {
     public function run(): void
     {
-        $filePath = storage_path('app/data/EyeExamination.xlsx');
+        $filePath = storage_path('app/data/LegacyEyeExamination.xlsx');
 
         $rows = Excel::toArray([], $filePath)[0];
         $headers = array_shift($rows);
@@ -29,7 +29,7 @@ class EyeExaminationsSeeder extends Seeder
 
             if (!$patient) continue;
 
-            EyeExamination::create([
+            LegacyEyeExamination::create([
                 'id' => $row[0], // ExamNo
                 'patient_id' => $patient->id,
                 'diagnosis_type1_id' => $row[9] ?? null,

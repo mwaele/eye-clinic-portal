@@ -7,39 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     protected $fillable = [
-        'patient_no',
-        'legacy_patient_id',
         'name',
-        'address',
         'phone',
-        'dob',
         'age',
+        'address',
+        'patient_no',
     ];
-
-    protected $casts = [
-        'visit_date' => 'datetime',
-        'dob' => 'date',
-    ];
-
-
-    public function eyeExaminations()
-    {
-        return $this->hasMany(EyeExamination::class);
-    }
-
-    public function diagnosisMasters()
-    {
-        return $this->hasMany(DiagnosisMaster::class);
-    }
-    
-    public function getFormattedPhoneAttribute()
-    {
-        return $this->phone ? '0' . $this->phone : null;
-    }
 
     public function visits()
     {
         return $this->hasMany(Visit::class);
     }
 
+    // Accessor to prepend “0” to phone numbers
+    public function getFormattedPhoneAttribute()
+    {
+        return '0' . ltrim($this->phone, '0');
+    }
 }

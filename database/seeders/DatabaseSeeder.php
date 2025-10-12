@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DiagnosisMasterSeeder::class,
             PatientsTableSeeder::class,
-            EyeExaminationsSeeder::class,
+            LegacyEyeExaminationsSeeder::class,
         ]);
     }
 }

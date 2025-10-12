@@ -11,20 +11,16 @@ class DiagnosisMaster extends Model
     protected $fillable = [
         'code',
         'name',
-        'tblind_irreversility',
-        'employee_id',
-        'patient_id',
+        'description',
     ];
 
     public function eyeExaminations()
     {
-        return $this->hasMany(EyeExamination::class, 'diagnosis_type1_id')
-                    ->orWhere('diagnosis_type2_id', $this->id)
-                    ->orWhere('diagnosis_type3_id', $this->id);
-    }
-
-    public function patients()
-    {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsToMany(
+            EyeExamination::class,
+            'eye_examination_diagnosis',
+            'diagnosis_master_id',
+            'eye_examination_id'
+        );
     }
 }
