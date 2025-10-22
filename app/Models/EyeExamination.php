@@ -41,5 +41,13 @@ class EyeExamination extends Model
     {
         return $this->hasMany(Prescription::class);
     }
+
+    public function prescriptionEyeGlasses() {
+        return $this->hasMany(PrescriptionEyeGlass::class);
+    }
+
+    public function prescriptionEyeDrops() {
+        return $this->hasMany(PrescriptionEyeDrop::class);
+    }
 }
 
