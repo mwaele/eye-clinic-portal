@@ -11,7 +11,7 @@ class DiagnosisMasterSeeder extends Seeder
 {
     public function run(): void
     {
-        $filePath = storage_path('app/data/DiagnosisMaster.xlsx');
+        $filePath = storage_path('seeders/data/DiagnosisMaster.xlsx');
 
         $rows = Excel::toArray([], $filePath)[0];
         $headers = array_shift($rows);
