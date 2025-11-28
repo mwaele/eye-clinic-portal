@@ -14,7 +14,7 @@ class PatientsTableSeeder extends Seeder
 {
     public function run(): void
     {
-        $filePath = storage_path('seeders/data/PatDetails.xlsx'); // place file here
+        $filePath = database_path('seeders/data/PatDetails.xlsx'); // place file here
 
         $rows = Excel::toArray([], $filePath)[0];
 

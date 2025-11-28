@@ -14,7 +14,7 @@ class LegacyEyeExaminationsSeeder extends Seeder
 {
     public function run(): void
     {
-        $filePath = storage_path('seeders/data/LegacyEyeExamination.xlsx');
+        $filePath = database_path('seeders/data/LegacyEyeExamination.xlsx');
 
         $rows = Excel::toArray([], $filePath)[0];
         $headers = array_shift($rows);
